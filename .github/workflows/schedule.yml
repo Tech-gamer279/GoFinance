@@ -1,0 +1,5 @@
+name: Scheduled price check
+
+on: schedule: - cron: '*/5 * * * *' # every 5 minutes workflow_dispatch:
+
+jobs: run: runs-on: ubuntu-latest steps: - uses: actions/checkout@v4 - name: Set up Python uses: actions/setup-python@v4 with: python-version: '3.11' - name: Install dependencies run: | python -m pip install --upgrade pip pip install -r requirements.txt - name: Run checker once env: ALERT_DISCORD_WEBHOOK_URL: ${{ secrets.ALERT_DISCORD_WEBHOOK_URL }} ALERT_TELEGRAM_BOT_TOKEN: ${{ secrets.ALERT_TELEGRAM_BOT_TOKEN }} ALERT_TELEGRAM_CHAT_ID: ${{ secrets.ALERT_TELEGRAM_CHAT_ID }} ALPHA_VANTAGE_KEY: ${{ secrets.ALPHA_VANTAGE_KEY }} CRYPTO_TICKERS: ${{ secrets.CRYPTO_TICKERS }} STOCK_TICKERS: ${{ secrets.STOCK_TICKERS }} run: | python app/main.py --once
